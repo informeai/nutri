@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nutri - Product</title>
+    <style>
+        *{
+            font-size: 16px;
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+        }
+        body{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        #content{
+            padding: 10px;
+        }
+        #content a{
+            text-decoration: none;
+            font-family: 'Roboto',sans-serif;
+            color: #0d4eff;
+        }
+        #content input{
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="content">
+        <a href="/users" id="hrefUser">Users</a>
+        <a href="/product" id="hrefProd">Products</a>
+        <form id="formProd" action="/product" method="POST">
+        <input type="text" placeholder="Name" name="name"></br>
+        <input type="text" placeholder="Porção" name="porcao"></br>
+        <input type="text" placeholder="Proteinas" name="proteinas"></br>
+        <input type="text" placeholder="Calorias" name="calorias"></br>
+        <input type="text" placeholder="Carboidratos" name="carboidratos"></br>
+        <input type="text" placeholder="Gorduras Trans" name="gordurasTrans"></br>
+        <input type="text" placeholder="Gorduras Totais" name="gordurasTotais"></br>
+        <input type="text" placeholder="%/dia" name="porcentagemDia"></br>
+        <input type="submit" value="Cadastrar">
+        </form>
+    </div>
+    
+</body>
+</html>

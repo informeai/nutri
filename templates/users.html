@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nutri - Users</title>
+    <style>
+        *{
+            font-size: 16px;
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+        }
+        body{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        #content{
+            padding: 10px;
+        }
+        #content a{
+            text-decoration: none;
+            font-family: 'Roboto',sans-serif;
+            color: #0d4eff;
+        }
+        #content input{
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="content">
+        <a href="/users" id="hrefUser">Users</a>
+        <a href="/product" id="hrefProd">Products</a>
+        <form id="formUser" action="/users" method="POST"></form>
+        <input type="text" placeholder="User" name="user"></br>
+        <input type="text" placeholder="Password" name="password"></br>
+        <input type="submit" value="Cadastrar">
+    </div>
+</body>
+</html>
