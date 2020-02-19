@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template, redirect, abort
 from flask_sqlalchemy import SQLAlchemy
-
+import pyqrcode
 
 # App Flask
 app = Flask(__name__)
@@ -67,19 +67,59 @@ def update_user(user_name, user_password):
         user_updated = User(name=user_name, password=user_password)
         db.session.add(user_updated)
         db.commit()
+        return True
+    else:
+        return False
 
 # Funções CRUD PRODUCT
 def create_product(product):
-    pass
+    prod = get_product(product)
+    if not prod:
+        product_new = Product(name=product.name, porcao=product.porcao, calorias=product.calorias, 
+        proteinas=product.proteinas,carboidratos=product.carboidratos,gordurasTrans=product.gordurasTrans, 
+        gordurasTotais=product.gordurasTotais,porcentagemDia=product.porcentagemDia)
+
+        db.session.add(product_new)
+        db.session.commit()
+        return True
+    else:
+        return False
 
 def get_product(product):
-    pass
+    prod = Product.query.filter_by(name=product.name).first()
+    if prod:
+        return prod
+    else:
+        return None
 
 def delete_product(product):
-    pass
+    product = get_product(product)
+    if product:
+        db.session.delete(product)
+        db.session.commit()
+        return True
+    else:
+        return False
 
 def update_product(product):
-    pass
+    prod = get_product(product)
+    if prod:
+        product_updated = Product(name=product.name, porcao=product.porcao, calorias=product.calorias, 
+        proteinas=product.proteinas,carboidratos=product.carboidratos,gordurasTrans=product.gordurasTrans, 
+        gordurasTotais=product.gordurasTotais,porcentagemDia=product.porcentagemDia)
+        db.session.delete(prod)
+        db.session.add(product_updated)
+        db.session.commit()
+        return True
+    else:
+        return False
+
+# Criar Qrcodes
+def create_qr(url,product):
+    qr = pyqrcode.create(f'{url}{product}')
+    qr.png(f'QR/{product}.png',scale=6)
+
+
 
 # Create Tables
 db.create_all()
@@ -132,6 +172,36 @@ def bad():
 @app.route('/product', methods=['GET','POST'])
 def product():
     if request.method == 'POST':
-        return f'voltar para products'
+        prod_name = request.form['name']
+        prod_porcao = request.form['porcao']
+        prod_calorias = request.form['calorias']
+        prod_proteinas = request.form['proteinas']
+        prod_carboidratos = request.form['carboidratos']
+        prod_gordurasTrans = request.form['gordurasTrans']
+        prod_gordurasTotais = request.form['gordurasTotais']
+        prod_porcentagemDia = request.form['porcentagemDia']
+        
+        # Criar o Produto
+        product.name = prod_name
+        product.porcao = prod_porcao
+        product.calorias = prod_calorias
+        product.proteinas = prod_proteinas
+        product.carboidratos = prod_carboidratos
+        product.gordurasTrans = prod_gordurasTrans
+        product.gordurasTotais = prod_gordurasTotais
+        product.porcentagemDia = prod_porcentagemDia
+
+        # Add ao Banco
+        result = create_product(product)
+        if result:
+            # Criar qrcode e salvar png
+            create_qr('http://localhost:5000/products/',product.name)
+            return render_template('prod-cadastrado.html')
+        else:
+            return render_template('prod-ja-cadastrado.html')
     else:
         return render_template('product.html')
+    
+@app.route('/products/<prod>', methods=['GET'])
+def products(prod):
+    return render_template('products.html',product=prod)
