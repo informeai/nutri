@@ -7,17 +7,22 @@
     <title>{{login_title}}</title>
 </head>
 <body>
-    <form action="/login" method="POST">
-        <label for="name">
-            <input type="text" name="name" placeholder="Name">
-        </label></br>
-        <label for="pass">
-            <input type="password" name="pass" placeholder="Password">
-        </label></br>
-        <input type="submit" value="Login">
-        <a href="/cadastrar">Cadastrar</a>
-
-    </form>
+    <div class="d-flex justify-content-center align-items-center flex-column">
+        <form action="/login" method="POST">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" name="name">
+            </div>
+            <div class="form-group">
+                <label for="pass">Password:</label>
+                <input type="password" name="pass">
+            </div>
+                <input class="btn btn-secondary" type="submit" value="Login">
+                <a class="btn btn-primary" href="/cadastrar">Cadastrar</a>
+            
+        </form>
+    </div>
+    
 
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>

@@ -2,11 +2,13 @@ from flask import Flask, request, render_template, redirect, abort
 from flask_sqlalchemy import SQLAlchemy
 import pyqrcode
 import os
+import random
 
 # App Flask
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database/nutri.sqlite3'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 
 # Database
 db = SQLAlchemy(app)
@@ -115,12 +117,6 @@ def update_product(product):
     else:
         return False
 
-# Criar Qrcodes
-def create_qr(url,product):
-    qr = pyqrcode.create(f'{url}{product}')
-    qr.png(f'QR/{product}.png',scale=6)
-
-
 
 # Create Tables
 db.create_all()
@@ -195,8 +191,6 @@ def product():
         # Add ao Banco
         result = create_product(product)
         if result:
-            # Criar qrcode e salvar png
-            create_qr('http://localhost:5000/products/',product.name)
             return render_template('prod-cadastrado.html')
         else:
             return render_template('prod-ja-cadastrado.html')
@@ -205,7 +199,13 @@ def product():
     
 @app.route('/products/<prod>', methods=['GET'])
 def products(prod):
-    return render_template('products.html',product=prod)
+    listColors = ['#6610f2','#007bff','#e83e8c','#fd7e14','#20c997','#17a2b8']
+    # Verificar se existe o produto no database
+    prd = Product.query.filter_by(name=prod).first()
+    if prd:
+        return render_template('products.html',product=prd, colors=listColors, rand=random)
+    else:
+        return render_template('404.html')
 
 def main():
     port = int(os.environ.get('PORT',5000))
